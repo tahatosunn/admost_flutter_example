@@ -3,6 +3,8 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://mvn-repo.admost.com/artifactory/amr' }
+        maven { url 'https://s3.amazonaws.com/smaato-sdk-releases/' }
     }
 
     dependencies {
