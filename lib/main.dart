@@ -221,6 +221,59 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text(rewardedText),
               ),
             ),
+          ),
+          Card(
+            child: AdmostBanner(
+              adUnitId: Platform.isIOS
+                  ? "b4009772-de04-42c4-bbaa-c18da9e4a1ab"
+                  : '9fb970db-7d96-4ef2-ac8c-d88ec22270ff',
+              adSize: AdmostBannerSize.LEADERBOARD,
+              listener: (AdmostAdEvent event, Map<String, dynamic> args) {
+                if (event == AdmostAdEvent.loaded) {
+                  print("<ADMOST> Banner Ad network: ${args['network']}");
+                  print("<ADMOST> Banner Ad ecpm: ${args['ecpm']}");
+                  print("<ADMOST> Banner Ad Loaded");
+                }
+                if (event == AdmostAdEvent.clicked) {
+                  print("<ADMOST> Banner Ad network: ${args['network']}");
+                  print("<ADMOST> Banner Ad clicked");
+                }
+                if (event == AdmostAdEvent.failedToLoad) {
+                  print(
+                      "<ADMOST> Banner Error description: ${args['errorMessage']}");
+                  print("<ADMOST Banner Error code: ${args['errorCode']}");
+                }
+              },
+              //optional
+              //tag:"YOUR TAG",
+            ),
+          ),
+          Card(
+            child: AdmostNativeAd(
+              adUnitId: Platform.isIOS
+                  ? 'c72a4a52-23c5-4c34-9eb1-7bbc4c08c7e4'
+                  : '951d398e-b6ec-40a7-bc80-6b4b223418df',
+              adSize: AdmostBannerSize.MEDIUM_RECTANGLE,
+              xibNameForIOS: 'AMRNativeAdBaseView250',
+              listener: (AdmostAdEvent event, Map<String, dynamic> args) {
+                if (event == AdmostAdEvent.loaded) {
+                  print("<ADMOST> Native Ad network: ${args['network']}");
+                  print("<ADMOST> Native Ad ecpm: ${args['ecpm']}");
+                  print("<ADMOST> Native Ad Loaded");
+                }
+                if (event == AdmostAdEvent.clicked) {
+                  print("<ADMOST> Native Ad network: ${args['network']}");
+                  print("<ADMOST> Native Ad clicked");
+                }
+                if (event == AdmostAdEvent.failedToLoad) {
+                  print("<ADMOST> Native Ad Error code: ${args['errorCode']}");
+                  print(
+                      "<ADMOST> Native Ad Error description: ${args['errorMessage']}");
+                }
+              },
+              //optional
+              //tag:"YOUR TAG",
+            ),
           )
         ]),
       ),
