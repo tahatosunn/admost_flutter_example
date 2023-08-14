@@ -71,8 +71,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String interstitialText = 'Load Interstitial';
+  String rewardedText = 'Load Rewarded';
 
   AdmostInterstitial? interstitialAd;
+  AdmostRewarded? rewardAd;
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +158,67 @@ class _MyHomePageState extends State<MyHomePage> {
                 widthFactor: 2,
                 heightFactor: 2,
                 child: Text(interstitialText),
+              ),
+            ),
+          ),
+          Card(
+            child: InkWell(
+              splashColor: Colors.blue.withAlpha(30),
+              onTap: () async {
+                if (rewardAd == null) {
+                  rewardAd = AdmostRewarded(
+                    zoneId: Platform.isIOS
+                        ? '2bdefd44-5269-4cbc-b93a-373b74a2f067'
+                        : '88cfcfd0-2f8c-4aba-9f36-cc0ac99ab140',
+                    listener: (AdmostAdEvent event, Map<String, dynamic> args) {
+                      if (event == AdmostAdEvent.loaded) {
+                        print("<ADMOST> Rewarded loaded");
+
+                        print("<ADMOST> Rewarded network: ${args['network']}");
+                        print("<ADMOST> Rewarded ecpm: ${args['ecpm']}");
+                        rewardedText = 'Show Rewarded';
+                        setState(() {
+                          rewardedText;
+                        });
+                      } else if (event == AdmostAdEvent.dismissed) {
+                        print("<ADMOST> Rewarded dismissed");
+                        rewardedText = 'Load Rewarded';
+                        setState(() {
+                          rewardedText;
+                        });
+                      } else if (event == AdmostAdEvent.failedToLoad) {
+                        print("<ADMOST> Rewarded failedToLoad");
+                        print(
+                            "<ADMOST> Rewarded Error code: ${args['errorCode']}");
+                        print(
+                            "<ADMOST> Rewarded Error description: ${args['errorMessage']}");
+                      } else if (event == AdmostAdEvent.failedToShow) {
+                        print("<ADMOST>  Rewarded failedToShow");
+                        print(
+                            "<ADMOST> Rewarded Error code: ${args['errorCode']}");
+                        print(
+                            "<ADMOST> Rewarded Error description: ${args['errorMessage']}");
+                      } else if (event == AdmostAdEvent.opened) {
+                        print("<ADMOST> Rewarded Opened");
+                      } else if (event == AdmostAdEvent.completed) {
+                        print("<ADMOST> Rewarded completed");
+                      }
+                    },
+                  );
+                }
+
+                if (await rewardAd?.isLoaded ?? false) {
+                  rewardAd?.show();
+                  // If you want to add tag, you should remove the line above and use the code below (optional)
+                  // rewardAd.show("YOUR TAG");
+                } else {
+                  rewardAd?.load();
+                }
+              },
+              child: Center(
+                widthFactor: 2,
+                heightFactor: 2,
+                child: Text(rewardedText),
               ),
             ),
           )
